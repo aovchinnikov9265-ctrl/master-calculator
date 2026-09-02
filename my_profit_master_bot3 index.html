@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Калькулятор прибыли мастера</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(180deg, #fbf9f6 0%, #f4efe9 100%);
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(218, 208, 196, 0.4);
+      --text-main: #2c2825;
+      --text-muted: #8c827a;
+      --accent-color: #8b7355;
+      --accent-soft: #f2ece4;
+      --input-bg: #fdfbf7;
+      --input-border: #e8e2d8;
+      --profit-green: #3d7a5a;
+      --shadow-sm: 0 4px 20px rgba(139, 115, 85, 0.05);
+      --shadow-card: 0 10px 30px rgba(60, 50, 40, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      padding: 20px 16px 85px 16px;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-subtitle {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent-color);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+      letter-spacing: -0.3px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--accent-color);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .badge {
+      background: var(--accent-soft);
+      color: var(--accent-color);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .btn-action-header {
+      background: var(--accent-soft);
+      color: var(--accent-color);
+      border: 1px solid var(--card-border);
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-action-header:active {
+      transform: scale(0.96);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .input-group {
+      margin-bottom: 12px;
+    }
+
+    .input-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 12px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.25s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+    }
+
+    input:focus {
+      border-color: var(--accent-color);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
+    }
+
+    .item-block {
+      background: #ffffff;
+      border: 1px solid var(--input-border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .btn-delete {
+      background: none;
+      border: none;
+      color: #c95d53;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .btn-add {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent-soft);
+      color: var(--accent-color);
+      border: 1px dashed var(--accent-color);
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, #ffffff 0%, #fdfbf7 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 12px 32px rgba(139, 115, 85, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .result-row.total {
+      border-top: 1px solid var(--input-border);
+      margin-top: 10px;
+      padding-top: 14px;
+    }
+
+    .total-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .total-amount {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--profit-green);
+    }
+
+    .btn-save-bottom {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent-color);
+      color: #ffffff;
+      border: none;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(139, 115, 85, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .btn-save-bottom:active {
+      transform: scale(0.98);
+    }
+
+    /* МОДАЛЬНОЕ ОКНО */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(44, 40, 37, 0.4);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 24px 24px 0 0;
+      padding: 24px 20px 30px 20px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .catalog-item-card {
+      position: relative;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s ease;
+    }
+
+    .catalog-item-card:hover {
+      border-color: var(--accent-color);
+    }
+
+    .catalog-item-top {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .btn-info-icon {
+      background: var(--accent-soft);
+      color: var(--accent-color);
+      border: 1px solid var(--card-border);
+      width: 32px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .details-tooltip {
+      display: none;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .details-tooltip.show {
+      display: block;
+    }
+
+    .catalog-item-card:hover .details-tooltip {
+      display: block;
+    }
+
+    .details-title {
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent-color);
+      margin-bottom: 6px;
+    }
+
+    .details-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      border-bottom: 1px dashed var(--input-border);
+    }
+
+    .details-row:last-child {
+      border-bottom: none;
+    }
+
+    .btn-select-catalog {
+      width: 100%;
+      padding: 8px;
+      background: var(--accent-soft);
+      color: var(--accent-color);
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-modal-add {
+      width: 100%;
+      padding: 12px;
+      background: var(--input-bg);
+      border: 1px dashed var(--accent-color);
+      color: var(--accent-color);
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn-send-chat {
+      width: 100%;
+      padding: 14px;
+      background: #3d7a5a;
+      color: #ffffff;
+      border: none;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 12px rgba(61, 122, 90, 0.2);
+    }
+
+    .btn-modal-save {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent-soft);
+      color: var(--accent-color);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-subtitle">Расчет себестоимости</div>
+    <h2>Калькулятор прибыли мастера 💎</h2>
+  </div>
+
+  <!-- БЛОК 1: ВВОД УСЛУГИ -->
+  <div class="card">
+    <div class="section-title">
+      <div class="title-left"><span class="badge">1</span> Процедура</div>
+      <div class="header-actions">
+        <button class="btn-action-header" onclick="resetForm()">+ Новая</button>
+        <button class="btn-action-header" onclick="openModal()">⚙️ Прайс-лист</button>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="input-group">
+        <label>Название услуги</label>
+        <input type="text" id="serviceName" placeholder="Пилинг / Уход">
+      </div>
+      <div class="input-group">
+        <label>Цена клиенту (₽)</label>
+        <input type="number" id="servicePrice" placeholder="3500" oninput="calculate()">
+      </div>
+    </div>
+  </div>
+
+  <!-- БЛОК 2: РАСХОДНИКИ -->
+  <div class="card">
+    <div class="section-title">
+      <div class="title-left"><span class="badge">2</span> Составы и расходники</div>
+    </div>
+    <div id="itemsContainer"></div>
+    <button class="btn-add" onclick="addItem()">+ Добавить расходный материал</button>
+  </div>
+
+  <!-- РЕЗУЛЬТАТЫ -->
+  <div class="result-card">
+    <div class="result-row">
+      <span>Себестоимость:</span>
+      <span id="costVal" style="font-weight: 600; color: var(--text-main);">0 ₽</span>
+    </div>
+    <div class="result-row total">
+      <span class="total-title">Чистая прибыль:</span>
+      <span id="profitVal" class="total-amount">0 ₽</span>
+    </div>
+  </div>
+
+  <!-- КНОПКА СОХРАНЕНИЯ ВНИЗУ -->
+  <button class="btn-save-bottom" onclick="saveCurrentServiceToCatalog()">💾 Сохранить процедуру в прайс</button>
+
+  <!-- МОДАЛЬНОЕ ОКНО ПРАЙС-ЛИСТА -->
+  <div class="modal-overlay" id="catalogModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Прайс-лист процедур</div>
+        <button class="btn-delete" style="font-size: 16px;" onclick="closeModal()">✕</button>
+      </div>
+      
+      <div id="modalCatalogList"></div>
+      
+      <button class="btn-modal-add" onclick="addModalCatalogRow()">+ Добавить услугу</button>
+      <button class="btn-send-chat" onclick="sendCatalogToChat()">📤 Отправить прайс клиенту</button>
+      <button class="btn-modal-save" onclick="closeModal()">Закрыть</button>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) {
+      tg.expand();
+      if (tg.setHeaderColor) tg.setHeaderColor('#fbf9f6');
+      if (tg.setBackgroundColor) tg.setBackgroundColor('#fbf9f6');
+    }
+
+    let catalog = JSON.parse(localStorage.getItem('master_catalog')) || [
+      { 
+        name: 'Пилинг лица', 
+        price: 3500,
+        cost: 370,
+        items: [
+          { name: 'Пилинг состав', price: 4500, volume: 50, usage: 3 },
+          { name: 'Нейтрализатор', price: 2000, volume: 100, usage: 5 }
+        ]
+      },
+      { 
+        name: 'Чистка лица', 
+        price: 4000,
+        cost: 390,
+        items: [
+          { name: 'Гель гидрирующий', price: 1800, volume: 200, usage: 10 },
+          { name: 'Маска успокаивающая', price: 3000, volume: 150, usage: 15 }
+        ]
+      }
+    ];
+
+    let itemCount = 0;
+
+    function resetForm() {
+      document.getElementById('serviceName').value = '';
+      document.getElementById('servicePrice').value = '';
+      const container = document.getElementById('itemsContainer');
+      container.innerHTML = '';
+      itemCount = 0;
+      addItem();
+      calculate();
+    }
+
+    function toggleDetails(index) {
+      const tooltip = document.getElementById(`details-${index}`);
+      if (tooltip) {
+        tooltip.classList.toggle('show');
+      }
+    }
+
+    function renderModalCatalog() {
+      const container = document.getElementById('modalCatalogList');
+      container.innerHTML = '';
+
+      catalog.forEach((item, index) => {
+        let calculatedCost = 0;
+        let detailsHtml = '';
+
+        if (item.items && item.items.length > 0) {
+          item.items.forEach(mat => {
+            if (mat.name && mat.volume > 0) {
+              const matCost = (mat.price / mat.volume) * mat.usage;
+              calculatedCost += matCost;
+              detailsHtml += `
+                <div class="details-row">
+                  <span>• ${mat.name} (${mat.usage} мл/шт)</span>
+                  <span>${Math.round(matCost).toLocaleString('ru-RU')} ₽</span>
+                </div>
+              `;
+            }
+          });
+        }
+
+        // Если ручная себестоимость не была установлена, берем рассчитанную
+        if (item.cost === undefined) {
+          item.cost = Math.round(calculatedCost);
+        }
+
+        const div = document.createElement('div');
+        div.className = 'catalog-item-card';
+        div.innerHTML = `
+          <div class="catalog-item-top">
+            <input type="text" value="${item.name || ''}" onchange="updateCatalogItem(${index}, 'name', this.value)" placeholder="Название услуги">
+            <button class="btn-info-icon" onclick="toggleDetails(${index})" title="Посмотреть составы">ℹ️</button>
+            <button class="btn-delete" onclick="deleteCatalogItem(${index})">✕</button>
+          </div>
+
+          <div class="grid-2" style="margin-bottom: 8px;">
+            <div>
+              <label style="font-size: 9px;">Цена (₽)</label>
+              <input type="number" value="${item.price || ''}" onchange="updateCatalogItem(${index}, 'price', this.value)" placeholder="Цена ₽">
+            </div>
+            <div>
+              <label style="font-size: 9px;">Себестоимость (₽)</label>
+              <input type="number" value="${item.cost || ''}" onchange="updateCatalogItem(${index}, 'cost', this.value)" placeholder="Себестоимость ₽">
+            </div>
+          </div>
+
+          <div class="details-tooltip" id="details-${index}">
+            <div class="details-title">📦 Составы в базе:</div>
+            ${detailsHtml || '<div style="color:var(--text-muted);">Детальные составы не указаны</div>'}
+          </div>
+
+          <button class="btn-select-catalog" onclick="selectAndApplyFromCatalog(${index})">Выбрать эту процедуру</button>
+        `;
+        container.appendChild(div);
+      });
+
+      localStorage.setItem('master_catalog', JSON.stringify(catalog));
+    }
+
+    async function sendCatalogToChat() {
+      if (!catalog || catalog.length === 0) {
+        alert('Ваш прайс-лист пуст!');
+        return;
+      }
+
+      let text = "✨ Прайс-лист на услуги ✨\n\n";
+      catalog.forEach((item) => {
+        if (item.name && item.price) {
+          text += `• ${item.name} — ${item.price} ₽\n`;
+        }
+      });
+      text += "\nБуду рада видеть вас на процедурах! 🌸";
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Прайс-лист услуг',
+            text: text
+          });
+          return;
+        } catch (err) {
+          console.log('Шеринг отменен пользователем:', err);
+        }
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
+          
+          if (tg && tg.openTelegramLink) {
+            tg.openTelegramLink(shareUrl);
+          } else {
+            window.open(shareUrl, '_blank');
+          }
+          alert('Прайс-лист скопирован в буфер обмена! Вы можете вставить его в любой чат.');
+        } catch (e) {
+          alert('Не удалось скопировать прайс-лист.');
+        }
+      }
+    }
+
+    function getCurrentItems() {
+      const itemsData = [];
+      const blocks = document.querySelectorAll('.item-block');
+      blocks.forEach(block => {
+        itemsData.push({
+          name: block.querySelector('.item-name').value || '',
+          price: parseFloat(block.querySelector('.price').value) || 0,
+          volume: parseFloat(block.querySelector('.volume').value) || 0,
+          usage: parseFloat(block.querySelector('.usage').value) || 0
+        });
+      });
+      return itemsData;
+    }
+
+    function saveCurrentServiceToCatalog() {
+      const name = document.getElementById('serviceName').value.trim();
+      const price = parseFloat(document.getElementById('servicePrice').value) || 0;
+      const items = getCurrentItems();
+
+      let calculatedCost = 0;
+      items.forEach(item => {
+        if (item.volume > 0) {
+          calculatedCost += (item.price / item.volume) * item.usage;
+        }
+      });
+
+      if (!name) {
+        alert('Пожалуйста, введите название услуги');
+        return;
+      }
+
+      const existingIndex = catalog.findIndex(item => item.name.toLowerCase() === name.toLowerCase());
+
+      if (existingIndex !== -1) {
+        catalog[existingIndex].price = price;
+        catalog[existingIndex].cost = Math.round(calculatedCost);
+        catalog[existingIndex].items = items;
+      } else {
+        catalog.push({ name: name, price: price, cost: Math.round(calculatedCost), items: items });
+      }
+
+      localStorage.setItem('master_catalog', JSON.stringify(catalog));
+      alert('Процедура и расходники успешно сохранены в прайс-лист!');
+    }
+
+    function loadItemsToForm(itemsList) {
+      const container = document.getElementById('itemsContainer');
+      container.innerHTML = '';
+      itemCount = 0;
+
+      if (!itemsList || itemsList.length === 0) {
+        addItem();
+        return;
+      }
+
+      itemsList.forEach(item => {
+        itemCount++;
+        const div = document.createElement('div');
+        div.className = 'item-block';
+        div.id = `item-${itemCount}`;
+        
+        div.innerHTML = `
+          <div class="item-header">
+            <span>Материал ${itemCount}</span>
+            <button class="btn-delete" onclick="removeItem(${itemCount})">Удалить</button>
+          </div>
+          <div class="grid-2" style="margin-bottom: 10px;">
+            <div>
+              <label>Название</label>
+              <input type="text" class="item-name" value="${item.name || ''}" placeholder="Состав / Препарат">
+            </div>
+            <div>
+              <label>Цена пачки (₽)</label>
+              <input type="number" class="price" value="${item.price || ''}" placeholder="4000" oninput="calculate()">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>Объем (мл/шт)</label>
+              <input type="number" class="volume" value="${item.volume || ''}" placeholder="100" oninput="calculate()">
+            </div>
+            <div>
+              <label>Расход (мл/шт)</label>
+              <input type="number" class="usage" value="${item.usage || ''}" placeholder="3" oninput="calculate()">
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      calculate();
+    }
+
+    function selectAndApplyFromCatalog(index) {
+      const selected = catalog[index];
+      document.getElementById('serviceName').value = selected.name;
+      document.getElementById('servicePrice').value = selected.price;
+
+      if (selected.items && selected.items.length > 0) {
+        loadItemsToForm(selected.items);
+      } else {
+        const container = document.getElementById('itemsContainer');
+        container.innerHTML = '';
+        itemCount = 1;
+        const div = document.createElement('div');
+        div.className = 'item-block';
+        div.id = `item-1`;
+        div.innerHTML = `
+          <div class="item-header">
+            <span>Материал 1</span>
+          </div>
+          <div class="grid-2" style="margin-bottom: 10px;">
+            <div>
+              <label>Название</label>
+              <input type="text" class="item-name" value="Общие расходники" placeholder="Состав / Препарат">
+            </div>
+            <div>
+              <label>Цена пачки (₽)</label>
+              <input type="number" class="price" value="${selected.cost || 0}" placeholder="4000" oninput="calculate()">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>Объем (мл/шт)</label>
+              <input type="number" class="volume" value="1" placeholder="100" oninput="calculate()">
+            </div>
+            <div>
+              <label>Расход (мл/шт)</label>
+              <input type="number" class="usage" value="1" placeholder="3" oninput="calculate()">
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+        calculate();
+      }
+
+      closeModal();
+    }
+
+    function openModal() {
+      renderModalCatalog();
+      document.getElementById('catalogModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('catalogModal').classList.remove('active');
+    }
+
+    function updateCatalogItem(index, key, value) {
+      if (key === 'price' || key === 'cost') {
+        catalog[index][key] = parseFloat(value) || 0;
+      } else {
+        catalog[index][key] = value;
+      }
+      localStorage.setItem('master_catalog', JSON.stringify(catalog));
+    }
+
+    function addModalCatalogRow() {
+      catalog.push({ name: '', price: 0, cost: 0, items: [] });
+      renderModalCatalog();
+    }
+
+    function deleteCatalogItem(index) {
+      catalog.splice(index, 1);
+      renderModalCatalog();
+    }
+
+    function addItem() {
+      itemCount++;
+      const container = document.getElementById('itemsContainer');
+      const div = document.createElement('div');
+      div.className = 'item-block';
+      div.id = `item-${itemCount}`;
+      
+      div.innerHTML = `
+        <div class="item-header">
+          <span>Материал ${itemCount}</span>
+          ${itemCount > 1 ? `<button class="btn-delete" onclick="removeItem(${itemCount})">Удалить</button>` : ''}
+        </div>
+        <div class="grid-2" style="margin-bottom: 10px;">
+          <div>
+            <label>Название</label>
+            <input type="text" class="item-name" placeholder="Состав / Препарат">
+          </div>
+          <div>
+            <label>Цена пачки (₽)</label>
+            <input type="number" class="price" placeholder="4000" oninput="calculate()">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <label>Объем (мл/шт)</label>
+            <input type="number" class="volume" placeholder="100" oninput="calculate()">
+          </div>
+          <div>
+            <label>Расход (мл/шт)</label>
+            <input type="number" class="usage" placeholder="3" oninput="calculate()">
+          </div>
+        </div>
+      `;
+      
+      container.appendChild(div);
+      calculate();
+    }
+
+    function removeItem(id) {
+      const el = document.getElementById(`item-${id}`);
+      if (el) el.remove();
+      calculate();
+    }
+
+    function calculate() {
+      const servicePrice = parseFloat(document.getElementById('servicePrice').value) || 0;
+      let totalCost = 0;
+
+      const items = document.querySelectorAll('.item-block');
+      items.forEach(item => {
+        const price = parseFloat(item.querySelector('.price').value) || 0;
+        const volume = parseFloat(item.querySelector('.volume').value) || 0;
+        const usage = parseFloat(item.querySelector('.usage').value) || 0;
+
+        if (volume > 0) {
+          totalCost += (price / volume) * usage;
+        }
+      });
+
+      const profit = servicePrice - totalCost;
+
+      document.getElementById('costVal').innerText = `${Math.round(totalCost).toLocaleString('ru-RU')} ₽`;
+      document.getElementById('profitVal').innerText = `${Math.round(profit).toLocaleString('ru-RU')} ₽`;
+    }
+
+    addItem();
+  </script>
+</body>
+</html>
