@@ -2,795 +2,197 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Калькулятор прибыли мастера</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: var(--tg-theme-bg-color, #fbf9f6);
-      --text-main: var(--tg-theme-text-color, #2c2825);
-      --text-muted: var(--tg-theme-hint-color, #8c827a);
-      --card-bg: var(--tg-theme-secondary-bg-color, rgba(255, 255, 255, 0.85));
-      --accent-color: var(--tg-theme-button-color, #8b7355);
-      --accent-text: var(--tg-theme-button-text-color, #ffffff);
-      --card-border: rgba(139, 115, 85, 0.15);
-      --input-bg: var(--tg-theme-bg-color, #fdfbf7);
-      --input-border: rgba(139, 115, 85, 0.2);
-      --profit-green: #3d7a5a;
-      --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.04);
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+      --bg-color: #fbf9f6;
+      --card-bg: #ffffff;
+      --text-main: #2c2825;
+      --text-muted: #8c827a;
+      --accent: #2c6b56;
+      --accent-hover: #235544;
+      --border: #e6e1da;
+      --danger: #c95d53;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-color);
-      color: var(--text-main);
-      padding: 16px 12px 90px 12px;
-      margin: 0;
-      min-height: 100vh;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .header-subtitle {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--accent-color);
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    h2 {
-      font-size: 20px;
-      font-weight: 700;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
       color: var(--text-main);
       margin: 0;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
       padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .section-title {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--accent-color);
-      margin-bottom: 12px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .title-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .badge {
-      background: var(--accent-color);
-      color: var(--accent-text);
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: inline-flex;
-      align-items: center;
       justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
 
-    .btn-action-header {
+    .container {
+      width: 100%;
+      max-width: 480px;
       background: var(--card-bg);
-      color: var(--accent-color);
-      border: 1px solid var(--accent-color);
-      padding: 5px 8px;
-      border-radius: 8px;
-      font-size: 10px;
-      font-weight: 700;
-      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+    h1 {
+      font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--text-main);
     }
 
-    .input-group {
-      margin-bottom: 10px;
-    }
-
-    .input-group:last-child {
-      margin-bottom: 0;
+    .form-group {
+      margin-bottom: 16px;
     }
 
     label {
       display: block;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
       color: var(--text-muted);
-      margin-bottom: 4px;
     }
 
     input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
       border-radius: 10px;
-      border: 1px solid var(--input-border);
-      background: var(--input-bg);
-      color: var(--text-main);
-      font-size: 14px;
-      font-weight: 500;
-      font-family: inherit;
+      font-size: 16px;
+      box-sizing: border-box;
       outline: none;
       transition: border-color 0.2s;
+      background: #faf8f5;
     }
 
     input:focus {
-      border-color: var(--accent-color);
-    }
-
-    .item-block {
-      background: var(--card-bg);
-      border: 1px solid var(--input-border);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 10px;
-    }
-
-    .item-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      font-weight: 700;
-      font-size: 11px;
-      color: var(--accent-color);
-      text-transform: uppercase;
-    }
-
-    .btn-delete {
-      background: none;
-      border: none;
-      color: #e056fd;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 2px 6px;
-    }
-
-    .btn-add {
-      width: 100%;
-      padding: 12px;
-      background: transparent;
-      color: var(--accent-color);
-      border: 1px dashed var(--accent-color);
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
+      border-color: var(--accent);
+      background: #fff;
     }
 
     .result-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
+      margin-top: 24px;
+      background: #f4f7f5;
+      border-radius: 12px;
       padding: 16px;
-      box-shadow: var(--shadow-card);
-      margin-bottom: 14px;
+      border: 1px solid #d4e2dc;
     }
 
     .result-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 4px 0;
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .result-row.total {
-      border-top: 1px solid var(--input-border);
-      margin-top: 8px;
-      padding-top: 10px;
-    }
-
-    .total-title {
-      font-weight: 700;
+      margin-bottom: 8px;
       font-size: 14px;
-      color: var(--text-main);
     }
 
-    .total-amount {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--profit-green);
-    }
-
-    .btn-save-bottom {
-      width: 100%;
-      padding: 14px;
-      background: var(--accent-color);
-      color: var(--accent-text);
-      border: none;
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    /* МОДАЛЬНОЕ ОКНО */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(3px);
-      display: none;
-      justify-content: center;
-      align-items: flex-end;
-      z-index: 1000;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: var(--card-bg);
-      width: 100%;
-      max-width: 500px;
-      border-radius: 20px 20px 0 0;
-      padding: 20px 16px 24px 16px;
-      max-height: 85vh;
-      overflow-y: auto;
-      border-top: 1px solid var(--card-border);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .modal-title {
+    .result-row:last-child {
+      margin-bottom: 0;
+      font-weight: bold;
       font-size: 16px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .catalog-item-card {
-      background: var(--input-bg);
-      border: 1px solid var(--input-border);
-      border-radius: 12px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-
-    .catalog-item-top {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .btn-info-icon {
-      background: transparent;
-      color: var(--accent-color);
-      border: 1px solid var(--input-border);
-      width: 32px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .details-tooltip {
-      display: none;
-      background: var(--card-bg);
-      border: 1px solid var(--input-border);
-      border-radius: 8px;
-      padding: 8px 10px;
-      margin-bottom: 6px;
-      font-size: 11px;
-      color: var(--text-main);
-    }
-
-    .details-tooltip.show {
-      display: block;
-    }
-
-    .details-title {
-      font-weight: 700;
-      font-size: 10px;
-      text-transform: uppercase;
-      color: var(--accent-color);
-      margin-bottom: 4px;
-    }
-
-    .details-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 2px 0;
-      border-bottom: 1px dashed var(--input-border);
-    }
-
-    .details-row:last-child {
-      border-bottom: none;
-    }
-
-    .btn-select-catalog {
-      width: 100%;
-      padding: 6px;
-      background: var(--accent-color);
-      color: var(--accent-text);
-      border: none;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 4px;
-    }
-
-    .btn-modal-add {
-      width: 100%;
-      padding: 10px;
-      background: transparent;
-      border: 1px dashed var(--accent-color);
-      color: var(--accent-color);
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 12px;
-      cursor: pointer;
-      margin: 8px 0;
-    }
-
-    .btn-send-chat {
-      width: 100%;
-      padding: 12px;
-      background: var(--profit-green);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      margin-bottom: 6px;
-    }
-
-    .btn-modal-save {
-      width: 100%;
-      padding: 10px;
-      background: transparent;
-      color: var(--text-muted);
-      border: 1px solid var(--input-border);
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 12px;
-      cursor: pointer;
+      color: var(--accent);
+      border-top: 1px solid #d4e2dc;
+      padding-top: 8px;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="header-subtitle">Расчет себестоимости</div>
-    <h2>Калькулятор прибыли 💎</h2>
-  </div>
+  <script>
+    // ==========================================
+    // СИСТЕМА ДОСТУПА ПО TELEGRAM ID
+    // ==========================================
+    const ALLOWED_USERS = [
+      197451316, // <-- Ваш реальный Telegram ID
+      // 987654321, // <-- Здесь можно добавить ID других мастеров через запятую
+    ];
 
-  <div class="card">
-    <div class="section-title">
-      <div class="title-left"><span class="badge">1</span> Процедура</div>
-      <div class="header-actions">
-        <button class="btn-action-header" onclick="resetForm()">+ Новая</button>
-        <button class="btn-action-header" onclick="openModal()">⚙️ Прайс</button>
+    // Инициализация Telegram WebApp
+    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+    if (tg) {
+      tg.expand();
+    }
+
+    // Получаем ID пользователя
+    const userId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+
+    // Блокируем доступ, если ID нет в списке
+    if (!userId || !ALLOWED_USERS.includes(userId)) {
+      document.open();
+      document.write(`
+        <!DOCTYPE html>
+        <html lang="ru">
+        <head>
+          <meta charset="UTF-8">
+          <title>Доступ ограничен</title>
+        </head>
+        <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fbf9f6; color: #2c2825; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <div style="font-size: 48px; margin-bottom: 16px;">🛡️</div>
+          <h2 style="color: #c95d53; margin: 0 0 8px 0; font-size: 20px;">Доступ ограничен</h2>
+          <p style="font-size: 14px; color: #8c827a; max-width: 300px; text-align: center; line-height: 1.4; margin: 0 0 20px 0;">Этот инструмент предназначен только для авторизованных мастеров.</p>
+          <div style="font-size: 12px; background: rgba(0,0,0,0.05); padding: 8px 12px; border-radius: 8px; color: #555;">Ваш Telegram ID: ${userId || 'не определен'}</div>
+        </body>
+        </html>
+      `);
+      document.close();
+      throw new Error("Access denied");
+    }
+  </script>
+
+  <div class="container">
+    <h1>Калькулятор прибыли мастера</h1>
+    
+    <div class="form-group">
+      <label for="price">Стоимость услуги (₽)</label>
+      <input type="number" id="price" placeholder="0" value="3000" oninput="calculate()">
+    </div>
+
+    <div class="form-group">
+      <label for="cost">Себестоимость материалов (₽)</label>
+      <input type="number" id="cost" placeholder="0" value="500" oninput="calculate()">
+    </div>
+
+    <div class="form-group">
+      <label for="expenses">Прочие расходы / Налог (₽)</label>
+      <input type="number" id="expenses" placeholder="0" value="200" oninput="calculate()">
+    </div>
+
+    <div class="result-card">
+      <div class="result-row">
+        <span>Ваши расходы:</span>
+        <span id="totalCost">700 ₽</span>
       </div>
-    </div>
-    <div class="grid-2">
-      <div class="input-group">
-        <label>Название</label>
-        <input type="text" id="serviceName" placeholder="Пилинг / Уход">
+      <div class="result-row">
+        <span>Чистая прибыль:</span>
+        <span id="netProfit">2,300 ₽</span>
       </div>
-      <div class="input-group">
-        <label>Цена (₽)</label>
-        <input type="number" id="servicePrice" placeholder="3500" oninput="calculate()">
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="section-title">
-      <div class="title-left"><span class="badge">2</span> Расходники</div>
-    </div>
-    <div id="itemsContainer"></div>
-    <button class="btn-add" onclick="addItem()">+ Добавить материал</button>
-  </div>
-
-  <div class="result-card">
-    <div class="result-row">
-      <span>Себестоимость:</span>
-      <span id="costVal" style="font-weight: 600; color: var(--text-main);">0 ₽</span>
-    </div>
-    <div class="result-row total">
-      <span class="total-title">Чистая прибыль:</span>
-      <span id="profitVal" class="total-amount">0 ₽</span>
-    </div>
-  </div>
-
-  <button class="btn-save-bottom" onclick="saveCurrentServiceToCatalog()">💾 Сохранить процедуру</button>
-
-  <div class="modal-overlay" id="catalogModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="modal-title">Прайс-лист процедур</div>
-        <button class="btn-delete" style="font-size: 16px;" onclick="closeModal()">✕</button>
-      </div>
-      
-      <div id="modalCatalogList"></div>
-      
-      <button class="btn-modal-add" onclick="addModalCatalogRow()">+ Добавить услугу</button>
-      <button class="btn-send-chat" onclick="sendCatalogToChat()">📤 Отправить прайс клиенту</button>
-      <button class="btn-modal-save" onclick="closeModal()">Закрыть</button>
     </div>
   </div>
 
   <script>
-    // СПИСОК РАЗРЕШЕННЫХ TELEGRAM ID (Добавьте сюда свой ID и ID мастеров для теста)
-    const ALLOWED_USERS = [
-      1974511316, // <-- Замените на ваш реальный Telegram ID
-      // 987654321  // <-- ID других мастеров (можно раскомментировать и добавить)
-    ];
-
-    const tg = window.Telegram ? window.Telegram.WebApp : null;
-    if (tg) {
-      tg.expand();
-      
-      // ПРОВЕРКА ДОСТУПА ПО TELEGRAM ID
-      const userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
-      
-      // Если ID пользователя нет в списке разрешенных (и это не запуск в режиме разработки/браузер с пустой инициализацией)
-      if (!userId || !ALLOWED_USERS.includes(userId)) {
-        document.body.innerHTML = `
-          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 20px;">
-            <div style="font-size: 40px; margin-bottom: 12px;">⛔</div>
-            <h2 style="color: #c95d53; margin-bottom: 10px; font-size: 18px;">Доступ ограничен</h2>
-            <p style="font-size: 13px; color: var(--text-muted); max-width: 280px; line-height: 1.4;">Это персональный инструмент расчета. Обратитесь к автору для получения доступа.</p>
-          </div>
-        `;
-        throw new Error("Access denied"); // Останавливаем выполнение скрипта
-      }
-    }
-
-    let catalog = JSON.parse(localStorage.getItem('master_catalog')) || [
-      { 
-        name: 'Пилинг лица', 
-        price: 3500,
-        cost: 370,
-        items: [
-          { name: 'Пилинг состав', price: 4500, volume: 50, usage: 3 },
-          { name: 'Нейтрализатор', price: 2000, volume: 100, usage: 5 }
-        ]
-      }
-    ];
-
-    let itemCount = 0;
-
-    function resetForm() {
-      document.getElementById('serviceName').value = '';
-      document.getElementById('servicePrice').value = '';
-      document.getElementById('itemsContainer').innerHTML = '';
-      itemCount = 0;
-      addItem();
-      calculate();
-    }
-
-    function toggleDetails(index) {
-      const tooltip = document.getElementById(`details-${index}`);
-      if (tooltip) tooltip.classList.toggle('show');
-    }
-
-    function renderModalCatalog() {
-      const container = document.getElementById('modalCatalogList');
-      container.innerHTML = '';
-
-      catalog.forEach((item, index) => {
-        let calculatedCost = 0;
-        let detailsHtml = '';
-
-        if (item.items && item.items.length > 0) {
-          item.items.forEach(mat => {
-            if (mat.name && mat.volume > 0) {
-              const matCost = (mat.price / mat.volume) * mat.usage;
-              calculatedCost += matCost;
-              detailsHtml += `
-                <div class="details-row">
-                  <span>• ${mat.name} (${mat.usage} мл)</span>
-                  <span>${Math.round(matCost).toLocaleString('ru-RU')} ₽</span>
-                </div>
-              `;
-            }
-          });
-        }
-
-        if (item.cost === undefined) {
-          item.cost = Math.round(calculatedCost);
-        }
-
-        const div = document.createElement('div');
-        div.className = 'catalog-item-card';
-        div.innerHTML = `
-          <div class="catalog-item-top">
-            <input type="text" value="${item.name || ''}" onchange="updateCatalogItem(${index}, 'name', this.value)" placeholder="Название">
-            <button class="btn-info-icon" onclick="toggleDetails(${index})">ℹ️</button>
-            <button class="btn-delete" onclick="deleteCatalogItem(${index})">✕</button>
-          </div>
-
-          <div class="grid-2" style="margin-bottom: 6px;">
-            <div>
-              <label style="font-size: 8px;">Цена (₽)</label>
-              <input type="number" value="${item.price || ''}" onchange="updateCatalogItem(${index}, 'price', this.value)">
-            </div>
-            <div>
-              <label style="font-size: 8px;">Себестоимость (₽)</label>
-              <input type="number" value="${item.cost || ''}" onchange="updateCatalogItem(${index}, 'cost', this.value)">
-            </div>
-          </div>
-
-          <div class="details-tooltip" id="details-${index}">
-            <div class="details-title">📦 Составы:</div>
-            ${detailsHtml || '<div style="color:var(--text-muted);">Нет деталей</div>'}
-          </div>
-
-          <button class="btn-select-catalog" onclick="selectAndApplyFromCatalog(${index})">Выбрать процедуру</button>
-        `;
-        container.appendChild(div);
-      });
-
-      localStorage.setItem('master_catalog', JSON.stringify(catalog));
-    }
-
-    async function sendCatalogToChat() {
-      if (!catalog || catalog.length === 0) {
-        alert('Прайс пуст!');
-        return;
-      }
-
-      let text = "✨ Прайс-лист на услуги ✨\n\n";
-      catalog.forEach((item) => {
-        if (item.name && item.price) {
-          text += `• ${item.name} — ${item.price} ₽\n`;
-        }
-      });
-      text += "\nЖду вас на процедуры! 🌸";
-
-      if (navigator.share) {
-        try {
-          await navigator.share({ title: 'Прайс', text: text });
-          return;
-        } catch (err) {}
-      }
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        try {
-          await navigator.clipboard.writeText(text);
-          const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
-          if (tg && tg.openTelegramLink) {
-            tg.openTelegramLink(shareUrl);
-          } else {
-            window.open(shareUrl, '_blank');
-          }
-          alert('Прайс скопирован в буфер!');
-        } catch (e) {}
-      }
-    }
-
-    function getCurrentItems() {
-      const itemsData = [];
-      document.querySelectorAll('.item-block').forEach(block => {
-        itemsData.push({
-          name: block.querySelector('.item-name').value || '',
-          price: parseFloat(block.querySelector('.price').value) || 0,
-          volume: parseFloat(block.querySelector('.volume').value) || 0,
-          usage: parseFloat(block.querySelector('.usage').value) || 0
-        });
-      });
-      return itemsData;
-    }
-
-    function saveCurrentServiceToCatalog() {
-      const name = document.getElementById('serviceName').value.trim();
-      const price = parseFloat(document.getElementById('servicePrice').value) || 0;
-      const items = getCurrentItems();
-
-      let calculatedCost = 0;
-      items.forEach(item => {
-        if (item.volume > 0) calculatedCost += (item.price / item.volume) * item.usage;
-      });
-
-      if (!name) {
-        alert('Введите название услуги');
-        return;
-      }
-
-      const existingIndex = catalog.findIndex(item => item.name.toLowerCase() === name.toLowerCase());
-
-      if (existingIndex !== -1) {
-        catalog[existingIndex].price = price;
-        catalog[existingIndex].cost = Math.round(calculatedCost);
-        catalog[existingIndex].items = items;
-      } else {
-        catalog.push({ name: name, price: price, cost: Math.round(calculatedCost), items: items });
-      }
-
-      localStorage.setItem('master_catalog', JSON.stringify(catalog));
-      alert('Успешно сохранено в прайс!');
-    }
-
-    function loadItemsToForm(itemsList) {
-      const container = document.getElementById('itemsContainer');
-      container.innerHTML = '';
-      itemCount = 0;
-
-      if (!itemsList || itemsList.length === 0) {
-        addItem();
-        return;
-      }
-
-      itemsList.forEach(item => {
-        itemCount++;
-        const div = document.createElement('div');
-        div.className = 'item-block';
-        div.id = `item-${itemCount}`;
-        div.innerHTML = `
-          <div class="item-header">
-            <span>Материал ${itemCount}</span>
-            <button class="btn-delete" onclick="removeItem(${itemCount})">Удалить</button>
-          </div>
-          <div class="grid-2" style="margin-bottom: 8px;">
-            <div>
-              <label>Название</label>
-              <input type="text" class="item-name" value="${item.name || ''}">
-            </div>
-            <div>
-              <label>Цена пачки (₽)</label>
-              <input type="number" class="price" value="${item.price || ''}" oninput="calculate()">
-            </div>
-          </div>
-          <div class="grid-2">
-            <div>
-              <label>Объем</label>
-              <input type="number" class="volume" value="${item.volume || ''}" oninput="calculate()">
-            </div>
-            <div>
-              <label>Расход</label>
-              <input type="number" class="usage" value="${item.usage || ''}" oninput="calculate()">
-            </div>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-      calculate();
-    }
-
-    function selectAndApplyFromCatalog(index) {
-      const selected = catalog[index];
-      document.getElementById('serviceName').value = selected.name;
-      document.getElementById('servicePrice').value = selected.price;
-      loadItemsToForm(selected.items);
-      closeModal();
-    }
-
-    function openModal() {
-      renderModalCatalog();
-      document.getElementById('catalogModal').classList.add('active');
-    }
-
-    function closeModal() {
-      document.getElementById('catalogModal').classList.remove('active');
-    }
-
-    function updateCatalogItem(index, key, value) {
-      catalog[index][key] = (key === 'price' || key === 'cost') ? (parseFloat(value) || 0) : value;
-      localStorage.setItem('master_catalog', JSON.stringify(catalog));
-    }
-
-    function addModalCatalogRow() {
-      catalog.push({ name: '', price: 0, cost: 0, items: [] });
-      renderModalCatalog();
-    }
-
-    function deleteCatalogItem(index) {
-      catalog.splice(index, 1);
-      renderModalCatalog();
-    }
-
-    function addItem() {
-      itemCount++;
-      const container = document.getElementById('itemsContainer');
-      const div = document.createElement('div');
-      div.className = 'item-block';
-      div.id = `item-${itemCount}`;
-      div.innerHTML = `
-        <div class="item-header">
-          <span>Материал ${itemCount}</span>
-          ${itemCount > 1 ? `<button class="btn-delete" onclick="removeItem(${itemCount})">Удалить</button>` : ''}
-        </div>
-        <div class="grid-2" style="margin-bottom: 8px;">
-          <div>
-            <label>Название</label>
-            <input type="text" class="item-name" placeholder="Препарат">
-          </div>
-          <div>
-            <label>Цена пачки (₽)</label>
-            <input type="number" class="price" placeholder="4000" oninput="calculate()">
-          </div>
-        </div>
-        <div class="grid-2">
-          <div>
-            <label>Объем</label>
-            <input type="number" class="volume" placeholder="100" oninput="calculate()">
-          </div>
-          <div>
-            <label>Расход</label>
-            <input type="number" class="usage" placeholder="3" oninput="calculate()">
-          </div>
-        </div>
-      `;
-      container.appendChild(div);
-      calculate();
-    }
-
-    function removeItem(id) {
-      document.getElementById(`item-${id}`)?.remove();
-      calculate();
-    }
-
     function calculate() {
-      const servicePrice = parseFloat(document.getElementById('servicePrice').value) || 0;
-      let totalCost = 0;
+      const price = parseFloat(document.getElementById('price').value) || 0;
+      const cost = parseFloat(document.getElementById('cost').value) || 0;
+      const expenses = parseFloat(document.getElementById('expenses').value) || 0;
 
-      document.querySelectorAll('.item-block').forEach(item => {
-        const price = parseFloat(item.querySelector('.price').value) || 0;
-        const volume = parseFloat(item.querySelector('.volume').value) || 0;
-        const usage = parseFloat(item.querySelector('.usage').value) || 0;
-        if (volume > 0) totalCost += (price / volume) * usage;
-      });
+      const totalCost = cost + expenses;
+      const netProfit = price - totalCost;
 
-      const profit = servicePrice - totalCost;
-      document.getElementById('costVal').innerText = `${Math.round(totalCost).toLocaleString('ru-RU')} ₽`;
-      document.getElementById('profitVal').innerText = `${Math.round(profit).toLocaleString('ru-RU')} ₽`;
+      document.getElementById('totalCost').innerText = totalCost.toLocaleString('ru-RU') + ' ₽';
+      document.getElementById('netProfit').innerText = netProfit.toLocaleString('ru-RU') + ' ₽';
     }
 
-    addItem();
+    // Первичный расчет при загрузке
+    calculate();
   </script>
 </body>
 </html>
