@@ -478,7 +478,7 @@
       const userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
       
       // Если ID пользователя нет в списке разрешенных (и это не запуск в режиме разработки/браузер с пустой инициализацией)
-      if (userId && !ALLOWED_USERS.includes(userId)) {
+      if (!userId || !ALLOWED_USERS.includes(userId)) {
         document.body.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 20px;">
             <div style="font-size: 40px; margin-bottom: 12px;">⛔</div>
