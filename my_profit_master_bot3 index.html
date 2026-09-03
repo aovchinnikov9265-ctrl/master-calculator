@@ -8,18 +8,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-gradient: linear-gradient(180deg, #fbf9f6 0%, #f4efe9 100%);
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --card-border: rgba(218, 208, 196, 0.4);
-      --text-main: #2c2825;
-      --text-muted: #8c827a;
-      --accent-color: #8b7355;
-      --accent-soft: #f2ece4;
-      --input-bg: #fdfbf7;
-      --input-border: #e8e2d8;
+      --bg-color: var(--tg-theme-bg-color, #fbf9f6);
+      --text-main: var(--tg-theme-text-color, #2c2825);
+      --text-muted: var(--tg-theme-hint-color, #8c827a);
+      --card-bg: var(--tg-theme-secondary-bg-color, rgba(255, 255, 255, 0.85));
+      --accent-color: var(--tg-theme-button-color, #8b7355);
+      --accent-text: var(--tg-theme-button-text-color, #ffffff);
+      --card-border: rgba(139, 115, 85, 0.15);
+      --input-bg: var(--tg-theme-bg-color, #fdfbf7);
+      --input-border: rgba(139, 115, 85, 0.2);
       --profit-green: #3d7a5a;
-      --shadow-sm: 0 4px 20px rgba(139, 115, 85, 0.05);
-      --shadow-card: 0 10px 30px rgba(60, 50, 40, 0.04);
+      --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.04);
     }
 
     * {
@@ -29,20 +28,20 @@
 
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-gradient);
+      background: var(--bg-color);
       color: var(--text-main);
-      padding: 20px 16px 85px 16px;
+      padding: 16px 12px 90px 12px;
       margin: 0;
       min-height: 100vh;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .header-subtitle {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 2px;
       color: var(--accent-color);
@@ -51,31 +50,28 @@
     }
 
     h2 {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
       color: var(--text-main);
       margin: 0;
-      letter-spacing: -0.3px;
     }
 
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 18px;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
       box-shadow: var(--shadow-card);
     }
 
     .section-title {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       color: var(--accent-color);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -84,7 +80,7 @@
     .title-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .header-actions {
@@ -93,42 +89,37 @@
     }
 
     .badge {
-      background: var(--accent-soft);
-      color: var(--accent-color);
+      background: var(--accent-color);
+      color: var(--accent-text);
       border-radius: 50%;
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
     }
 
     .btn-action-header {
-      background: var(--accent-soft);
+      background: var(--card-bg);
       color: var(--accent-color);
-      border: 1px solid var(--card-border);
-      padding: 6px 10px;
-      border-radius: 10px;
-      font-size: 11px;
+      border: 1px solid var(--accent-color);
+      padding: 5px 8px;
+      border-radius: 8px;
+      font-size: 10px;
       font-weight: 700;
       cursor: pointer;
-      letter-spacing: 0.3px;
-    }
-
-    .btn-action-header:active {
-      transform: scale(0.96);
     }
 
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .input-group {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .input-group:last-child {
@@ -137,144 +128,129 @@
 
     label {
       display: block;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     input {
       width: 100%;
-      padding: 11px 13px;
-      border-radius: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
       border: 1px solid var(--input-border);
       background: var(--input-bg);
       color: var(--text-main);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       font-family: inherit;
       outline: none;
-      transition: all 0.25s ease;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+      transition: border-color 0.2s;
     }
 
     input:focus {
       border-color: var(--accent-color);
-      background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
     }
 
     .item-block {
-      background: #ffffff;
+      background: var(--card-bg);
       border: 1px solid var(--input-border);
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
     }
 
     .item-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       font-weight: 700;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--accent-color);
       text-transform: uppercase;
-      letter-spacing: 0.8px;
     }
 
     .btn-delete {
       background: none;
       border: none;
-      color: #c95d53;
+      color: #e056fd;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 6px;
+      padding: 2px 6px;
     }
 
     .btn-add {
       width: 100%;
-      padding: 14px;
-      background: var(--accent-soft);
+      padding: 12px;
+      background: transparent;
       color: var(--accent-color);
       border: 1px dashed var(--accent-color);
-      border-radius: 14px;
-      font-size: 13px;
+      border-radius: 12px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
 
     .result-card {
-      background: linear-gradient(135deg, #ffffff 0%, #fdfbf7 100%);
+      background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 12px 32px rgba(139, 115, 85, 0.08);
-      margin-bottom: 16px;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 14px;
     }
 
     .result-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 0;
-      font-size: 14px;
+      padding: 4px 0;
+      font-size: 13px;
       color: var(--text-muted);
       font-weight: 500;
     }
 
     .result-row.total {
       border-top: 1px solid var(--input-border);
-      margin-top: 10px;
-      padding-top: 14px;
+      margin-top: 8px;
+      padding-top: 10px;
     }
 
     .total-title {
       font-weight: 700;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-main);
     }
 
     .total-amount {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--profit-green);
     }
 
     .btn-save-bottom {
       width: 100%;
-      padding: 16px;
+      padding: 14px;
       background: var(--accent-color);
-      color: #ffffff;
+      color: var(--accent-text);
       border: none;
-      border-radius: 16px;
-      font-size: 14px;
+      border-radius: 14px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(139, 115, 85, 0.25);
-      transition: all 0.2s ease;
-    }
-
-    .btn-save-bottom:active {
-      transform: scale(0.98);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     /* МОДАЛЬНОЕ ОКНО */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(44, 40, 37, 0.4);
-      backdrop-filter: blur(4px);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
       display: none;
       justify-content: center;
       align-items: flex-end;
@@ -286,105 +262,85 @@
     }
 
     .modal-content {
-      background: #ffffff;
+      background: var(--card-bg);
       width: 100%;
       max-width: 500px;
-      border-radius: 24px 24px 0 0;
-      padding: 24px 20px 30px 20px;
+      border-radius: 20px 20px 0 0;
+      padding: 20px 16px 24px 16px;
       max-height: 85vh;
       overflow-y: auto;
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
-      animation: slideUp 0.3s ease-out;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+      border-top: 1px solid var(--card-border);
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .modal-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
     }
 
     .catalog-item-card {
-      position: relative;
-      const ALLOWED_USERS = [
       background: var(--input-bg);
       border: 1px solid var(--input-border);
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 12px;
-      transition: border-color 0.2s ease;
-    }
-
-    .catalog-item-card:hover {
-      border-color: var(--accent-color);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 10px;
     }
 
     .catalog-item-top {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .btn-info-icon {
-      background: var(--accent-soft);
+      background: transparent;
       color: var(--accent-color);
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--input-border);
       width: 32px;
-      height: 38px;
-      border-radius: 10px;
+      height: 36px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
       cursor: pointer;
       flex-shrink: 0;
     }
 
     .details-tooltip {
       display: none;
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      font-size: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      font-size: 11px;
       color: var(--text-main);
-      box-shadow: var(--shadow-sm);
     }
 
     .details-tooltip.show {
       display: block;
     }
 
-    .catalog-item-card:hover .details-tooltip {
-      display: block;
-    }
-
     .details-title {
       font-weight: 700;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       color: var(--accent-color);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .details-row {
       display: flex;
       justify-content: space-between;
-      padding: 3px 0;
+      padding: 2px 0;
       border-bottom: 1px dashed var(--input-border);
     }
 
@@ -394,53 +350,52 @@
 
     .btn-select-catalog {
       width: 100%;
-      padding: 8px;
-      background: var(--accent-soft);
-      color: var(--accent-color);
+      padding: 6px;
+      background: var(--accent-color);
+      color: var(--accent-text);
       border: none;
-      border-radius: 8px;
-      font-size: 12px;
+      border-radius: 6px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
+      margin-top: 4px;
     }
 
     .btn-modal-add {
       width: 100%;
-      padding: 12px;
-      background: var(--input-bg);
+      padding: 10px;
+      background: transparent;
       border: 1px dashed var(--accent-color);
       color: var(--accent-color);
-      border-radius: 12px;
+      border-radius: 10px;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin: 8px 0;
     }
 
     .btn-send-chat {
       width: 100%;
-      padding: 14px;
-      background: #3d7a5a;
+      padding: 12px;
+      background: var(--profit-green);
       color: #ffffff;
       border: none;
-      border-radius: 14px;
+      border-radius: 10px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
-      margin-bottom: 8px;
-      box-shadow: 0 4px 12px rgba(61, 122, 90, 0.2);
+      margin-bottom: 6px;
     }
 
     .btn-modal-save {
       width: 100%;
-      padding: 12px;
-      background: var(--accent-soft);
-      color: var(--accent-color);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 13px;
+      padding: 10px;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 12px;
       cursor: pointer;
     }
   </style>
@@ -449,40 +404,37 @@
 
   <div class="header">
     <div class="header-subtitle">Расчет себестоимости</div>
-    <h2>Калькулятор прибыли мастера 💎</h2>
+    <h2>Калькулятор прибыли 💎</h2>
   </div>
 
-  <!-- БЛОК 1: ВВОД УСЛУГИ -->
   <div class="card">
     <div class="section-title">
       <div class="title-left"><span class="badge">1</span> Процедура</div>
       <div class="header-actions">
         <button class="btn-action-header" onclick="resetForm()">+ Новая</button>
-        <button class="btn-action-header" onclick="openModal()">⚙️ Прайс-лист</button>
+        <button class="btn-action-header" onclick="openModal()">⚙️ Прайс</button>
       </div>
     </div>
     <div class="grid-2">
       <div class="input-group">
-        <label>Название услуги</label>
+        <label>Название</label>
         <input type="text" id="serviceName" placeholder="Пилинг / Уход">
       </div>
       <div class="input-group">
-        <label>Цена клиенту (₽)</label>
+        <label>Цена (₽)</label>
         <input type="number" id="servicePrice" placeholder="3500" oninput="calculate()">
       </div>
     </div>
   </div>
 
-  <!-- БЛОК 2: РАСХОДНИКИ -->
   <div class="card">
     <div class="section-title">
-      <div class="title-left"><span class="badge">2</span> Составы и расходники</div>
+      <div class="title-left"><span class="badge">2</span> Расходники</div>
     </div>
     <div id="itemsContainer"></div>
-    <button class="btn-add" onclick="addItem()">+ Добавить расходный материал</button>
+    <button class="btn-add" onclick="addItem()">+ Добавить материал</button>
   </div>
 
-  <!-- РЕЗУЛЬТАТЫ -->
   <div class="result-card">
     <div class="result-row">
       <span>Себестоимость:</span>
@@ -494,10 +446,8 @@
     </div>
   </div>
 
-  <!-- КНОПКА СОХРАНЕНИЯ ВНИЗУ -->
-  <button class="btn-save-bottom" onclick="saveCurrentServiceToCatalog()">💾 Сохранить процедуру в прайс</button>
+  <button class="btn-save-bottom" onclick="saveCurrentServiceToCatalog()">💾 Сохранить процедуру</button>
 
-  <!-- МОДАЛЬНОЕ ОКНО ПРАЙС-ЛИСТА -->
   <div class="modal-overlay" id="catalogModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -514,11 +464,30 @@
   </div>
 
   <script>
+    // СПИСОК РАЗРЕШЕННЫХ TELEGRAM ID (Добавьте сюда свой ID и ID мастеров для теста)
+    const ALLOWED_USERS = [
+      123456789, // <-- Замените на ваш реальный Telegram ID
+      // 987654321  // <-- ID других мастеров (можно раскомментировать и добавить)
+    ];
+
     const tg = window.Telegram ? window.Telegram.WebApp : null;
     if (tg) {
       tg.expand();
-      if (tg.setHeaderColor) tg.setHeaderColor('#fbf9f6');
-      if (tg.setBackgroundColor) tg.setBackgroundColor('#fbf9f6');
+      
+      // ПРОВЕРКА ДОСТУПА ПО TELEGRAM ID
+      const userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+      
+      // Если ID пользователя нет в списке разрешенных (и это не запуск в режиме разработки/браузер с пустой инициализацией)
+      if (userId && !ALLOWED_USERS.includes(userId)) {
+        document.body.innerHTML = `
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 20px;">
+            <div style="font-size: 40px; margin-bottom: 12px;">⛔</div>
+            <h2 style="color: #c95d53; margin-bottom: 10px; font-size: 18px;">Доступ ограничен</h2>
+            <p style="font-size: 13px; color: var(--text-muted); max-width: 280px; line-height: 1.4;">Это персональный инструмент расчета. Обратитесь к автору для получения доступа.</p>
+          </div>
+        `;
+        throw new Error("Access denied"); // Останавливаем выполнение скрипта
+      }
     }
 
     let catalog = JSON.parse(localStorage.getItem('master_catalog')) || [
@@ -530,15 +499,6 @@
           { name: 'Пилинг состав', price: 4500, volume: 50, usage: 3 },
           { name: 'Нейтрализатор', price: 2000, volume: 100, usage: 5 }
         ]
-      },
-      { 
-        name: 'Чистка лица', 
-        price: 4000,
-        cost: 390,
-        items: [
-          { name: 'Гель гидрирующий', price: 1800, volume: 200, usage: 10 },
-          { name: 'Маска успокаивающая', price: 3000, volume: 150, usage: 15 }
-        ]
       }
     ];
 
@@ -547,8 +507,7 @@
     function resetForm() {
       document.getElementById('serviceName').value = '';
       document.getElementById('servicePrice').value = '';
-      const container = document.getElementById('itemsContainer');
-      container.innerHTML = '';
+      document.getElementById('itemsContainer').innerHTML = '';
       itemCount = 0;
       addItem();
       calculate();
@@ -556,9 +515,7 @@
 
     function toggleDetails(index) {
       const tooltip = document.getElementById(`details-${index}`);
-      if (tooltip) {
-        tooltip.classList.toggle('show');
-      }
+      if (tooltip) tooltip.classList.toggle('show');
     }
 
     function renderModalCatalog() {
@@ -576,7 +533,7 @@
               calculatedCost += matCost;
               detailsHtml += `
                 <div class="details-row">
-                  <span>• ${mat.name} (${mat.usage} мл/шт)</span>
+                  <span>• ${mat.name} (${mat.usage} мл)</span>
                   <span>${Math.round(matCost).toLocaleString('ru-RU')} ₽</span>
                 </div>
               `;
@@ -584,7 +541,6 @@
           });
         }
 
-        // Если ручная себестоимость не была установлена, берем рассчитанную
         if (item.cost === undefined) {
           item.cost = Math.round(calculatedCost);
         }
@@ -593,28 +549,28 @@
         div.className = 'catalog-item-card';
         div.innerHTML = `
           <div class="catalog-item-top">
-            <input type="text" value="${item.name || ''}" onchange="updateCatalogItem(${index}, 'name', this.value)" placeholder="Название услуги">
-            <button class="btn-info-icon" onclick="toggleDetails(${index})" title="Посмотреть составы">ℹ️</button>
+            <input type="text" value="${item.name || ''}" onchange="updateCatalogItem(${index}, 'name', this.value)" placeholder="Название">
+            <button class="btn-info-icon" onclick="toggleDetails(${index})">ℹ️</button>
             <button class="btn-delete" onclick="deleteCatalogItem(${index})">✕</button>
           </div>
 
-          <div class="grid-2" style="margin-bottom: 8px;">
+          <div class="grid-2" style="margin-bottom: 6px;">
             <div>
-              <label style="font-size: 9px;">Цена (₽)</label>
-              <input type="number" value="${item.price || ''}" onchange="updateCatalogItem(${index}, 'price', this.value)" placeholder="Цена ₽">
+              <label style="font-size: 8px;">Цена (₽)</label>
+              <input type="number" value="${item.price || ''}" onchange="updateCatalogItem(${index}, 'price', this.value)">
             </div>
             <div>
-              <label style="font-size: 9px;">Себестоимость (₽)</label>
-              <input type="number" value="${item.cost || ''}" onchange="updateCatalogItem(${index}, 'cost', this.value)" placeholder="Себестоимость ₽">
+              <label style="font-size: 8px;">Себестоимость (₽)</label>
+              <input type="number" value="${item.cost || ''}" onchange="updateCatalogItem(${index}, 'cost', this.value)">
             </div>
           </div>
 
           <div class="details-tooltip" id="details-${index}">
-            <div class="details-title">📦 Составы в базе:</div>
-            ${detailsHtml || '<div style="color:var(--text-muted);">Детальные составы не указаны</div>'}
+            <div class="details-title">📦 Составы:</div>
+            ${detailsHtml || '<div style="color:var(--text-muted);">Нет деталей</div>'}
           </div>
 
-          <button class="btn-select-catalog" onclick="selectAndApplyFromCatalog(${index})">Выбрать эту процедуру</button>
+          <button class="btn-select-catalog" onclick="selectAndApplyFromCatalog(${index})">Выбрать процедуру</button>
         `;
         container.appendChild(div);
       });
@@ -624,7 +580,7 @@
 
     async function sendCatalogToChat() {
       if (!catalog || catalog.length === 0) {
-        alert('Ваш прайс-лист пуст!');
+        alert('Прайс пуст!');
         return;
       }
 
@@ -634,41 +590,32 @@
           text += `• ${item.name} — ${item.price} ₽\n`;
         }
       });
-      text += "\nБуду рада видеть вас на процедурах! 🌸";
+      text += "\nЖду вас на процедуры! 🌸";
 
       if (navigator.share) {
         try {
-          await navigator.share({
-            title: 'Прайс-лист услуг',
-            text: text
-          });
+          await navigator.share({ title: 'Прайс', text: text });
           return;
-        } catch (err) {
-          console.log('Шеринг отменен пользователем:', err);
-        }
+        } catch (err) {}
       }
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         try {
           await navigator.clipboard.writeText(text);
           const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
-          
           if (tg && tg.openTelegramLink) {
             tg.openTelegramLink(shareUrl);
           } else {
             window.open(shareUrl, '_blank');
           }
-          alert('Прайс-лист скопирован в буфер обмена! Вы можете вставить его в любой чат.');
-        } catch (e) {
-          alert('Не удалось скопировать прайс-лист.');
-        }
+          alert('Прайс скопирован в буфер!');
+        } catch (e) {}
       }
     }
 
     function getCurrentItems() {
       const itemsData = [];
-      const blocks = document.querySelectorAll('.item-block');
-      blocks.forEach(block => {
+      document.querySelectorAll('.item-block').forEach(block => {
         itemsData.push({
           name: block.querySelector('.item-name').value || '',
           price: parseFloat(block.querySelector('.price').value) || 0,
@@ -686,13 +633,11 @@
 
       let calculatedCost = 0;
       items.forEach(item => {
-        if (item.volume > 0) {
-          calculatedCost += (item.price / item.volume) * item.usage;
-        }
+        if (item.volume > 0) calculatedCost += (item.price / item.volume) * item.usage;
       });
 
       if (!name) {
-        alert('Пожалуйста, введите название услуги');
+        alert('Введите название услуги');
         return;
       }
 
@@ -707,7 +652,7 @@
       }
 
       localStorage.setItem('master_catalog', JSON.stringify(catalog));
-      alert('Процедура и расходники успешно сохранены в прайс-лист!');
+      alert('Успешно сохранено в прайс!');
     }
 
     function loadItemsToForm(itemsList) {
@@ -725,36 +670,34 @@
         const div = document.createElement('div');
         div.className = 'item-block';
         div.id = `item-${itemCount}`;
-        
         div.innerHTML = `
           <div class="item-header">
             <span>Материал ${itemCount}</span>
             <button class="btn-delete" onclick="removeItem(${itemCount})">Удалить</button>
           </div>
-          <div class="grid-2" style="margin-bottom: 10px;">
+          <div class="grid-2" style="margin-bottom: 8px;">
             <div>
               <label>Название</label>
-              <input type="text" class="item-name" value="${item.name || ''}" placeholder="Состав / Препарат">
+              <input type="text" class="item-name" value="${item.name || ''}">
             </div>
             <div>
               <label>Цена пачки (₽)</label>
-              <input type="number" class="price" value="${item.price || ''}" placeholder="4000" oninput="calculate()">
+              <input type="number" class="price" value="${item.price || ''}" oninput="calculate()">
             </div>
           </div>
           <div class="grid-2">
             <div>
-              <label>Объем (мл/шт)</label>
-              <input type="number" class="volume" value="${item.volume || ''}" placeholder="100" oninput="calculate()">
+              <label>Объем</label>
+              <input type="number" class="volume" value="${item.volume || ''}" oninput="calculate()">
             </div>
             <div>
-              <label>Расход (мл/шт)</label>
-              <input type="number" class="usage" value="${item.usage || ''}" placeholder="3" oninput="calculate()">
+              <label>Расход</label>
+              <input type="number" class="usage" value="${item.usage || ''}" oninput="calculate()">
             </div>
           </div>
         `;
         container.appendChild(div);
       });
-
       calculate();
     }
 
@@ -762,45 +705,7 @@
       const selected = catalog[index];
       document.getElementById('serviceName').value = selected.name;
       document.getElementById('servicePrice').value = selected.price;
-
-      if (selected.items && selected.items.length > 0) {
-        loadItemsToForm(selected.items);
-      } else {
-        const container = document.getElementById('itemsContainer');
-        container.innerHTML = '';
-        itemCount = 1;
-        const div = document.createElement('div');
-        div.className = 'item-block';
-        div.id = `item-1`;
-        div.innerHTML = `
-          <div class="item-header">
-            <span>Материал 1</span>
-          </div>
-          <div class="grid-2" style="margin-bottom: 10px;">
-            <div>
-              <label>Название</label>
-              <input type="text" class="item-name" value="Общие расходники" placeholder="Состав / Препарат">
-            </div>
-            <div>
-              <label>Цена пачки (₽)</label>
-              <input type="number" class="price" value="${selected.cost || 0}" placeholder="4000" oninput="calculate()">
-            </div>
-          </div>
-          <div class="grid-2">
-            <div>
-              <label>Объем (мл/шт)</label>
-              <input type="number" class="volume" value="1" placeholder="100" oninput="calculate()">
-            </div>
-            <div>
-              <label>Расход (мл/шт)</label>
-              <input type="number" class="usage" value="1" placeholder="3" oninput="calculate()">
-            </div>
-          </div>
-        `;
-        container.appendChild(div);
-        calculate();
-      }
-
+      loadItemsToForm(selected.items);
       closeModal();
     }
 
@@ -814,11 +719,7 @@
     }
 
     function updateCatalogItem(index, key, value) {
-      if (key === 'price' || key === 'cost') {
-        catalog[index][key] = parseFloat(value) || 0;
-      } else {
-        catalog[index][key] = value;
-      }
+      catalog[index][key] = (key === 'price' || key === 'cost') ? (parseFloat(value) || 0) : value;
       localStorage.setItem('master_catalog', JSON.stringify(catalog));
     }
 
@@ -838,16 +739,15 @@
       const div = document.createElement('div');
       div.className = 'item-block';
       div.id = `item-${itemCount}`;
-      
       div.innerHTML = `
         <div class="item-header">
           <span>Материал ${itemCount}</span>
           ${itemCount > 1 ? `<button class="btn-delete" onclick="removeItem(${itemCount})">Удалить</button>` : ''}
         </div>
-        <div class="grid-2" style="margin-bottom: 10px;">
+        <div class="grid-2" style="margin-bottom: 8px;">
           <div>
             <label>Название</label>
-            <input type="text" class="item-name" placeholder="Состав / Препарат">
+            <input type="text" class="item-name" placeholder="Препарат">
           </div>
           <div>
             <label>Цена пачки (₽)</label>
@@ -856,23 +756,21 @@
         </div>
         <div class="grid-2">
           <div>
-            <label>Объем (мл/шт)</label>
+            <label>Объем</label>
             <input type="number" class="volume" placeholder="100" oninput="calculate()">
           </div>
           <div>
-            <label>Расход (мл/шт)</label>
+            <label>Расход</label>
             <input type="number" class="usage" placeholder="3" oninput="calculate()">
           </div>
         </div>
       `;
-      
       container.appendChild(div);
       calculate();
     }
 
     function removeItem(id) {
-      const el = document.getElementById(`item-${id}`);
-      if (el) el.remove();
+      document.getElementById(`item-${id}`)?.remove();
       calculate();
     }
 
@@ -880,19 +778,14 @@
       const servicePrice = parseFloat(document.getElementById('servicePrice').value) || 0;
       let totalCost = 0;
 
-      const items = document.querySelectorAll('.item-block');
-      items.forEach(item => {
+      document.querySelectorAll('.item-block').forEach(item => {
         const price = parseFloat(item.querySelector('.price').value) || 0;
         const volume = parseFloat(item.querySelector('.volume').value) || 0;
         const usage = parseFloat(item.querySelector('.usage').value) || 0;
-
-        if (volume > 0) {
-          totalCost += (price / volume) * usage;
-        }
+        if (volume > 0) totalCost += (price / volume) * usage;
       });
 
       const profit = servicePrice - totalCost;
-
       document.getElementById('costVal').innerText = `${Math.round(totalCost).toLocaleString('ru-RU')} ₽`;
       document.getElementById('profitVal').innerText = `${Math.round(profit).toLocaleString('ru-RU')} ₽`;
     }
