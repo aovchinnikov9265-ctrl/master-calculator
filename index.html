@@ -14,7 +14,6 @@
       --text-main: #2c2825;
       --text-muted: #8c827a;
       --accent: #2c6b56;
-      --accent-hover: #235544;
       --border: #e6e1da;
       --danger: #c95d53;
     }
@@ -104,8 +103,6 @@
       margin-top: 8px;
     }
   </style>
-</head>
-<body>
 
   <script>
     // ==========================================
@@ -115,37 +112,31 @@
       197451316, // Ваш Telegram ID
     ];
 
-    // Инициализация Telegram WebApp
-    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-    if (tg) {
-      tg.expand();
-    }
+    // Ждем полной загрузки DOM, чтобы Telegram WebApp успел инициализироваться
+    window.addEventListener('DOMContentLoaded', () => {
+      const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+      if (tg) {
+        tg.expand();
+      }
 
-    // Получаем ID пользователя
-    const userId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+      const userId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
 
-    // Блокируем доступ, если ID нет в списке
-    if (!userId || !ALLOWED_USERS.includes(userId)) {
-      document.open();
-      document.write(`
-        <!DOCTYPE html>
-        <html lang="ru">
-        <head>
-          <meta charset="UTF-8">
-          <title>Доступ ограничен</title>
-        </head>
-        <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fbf9f6; color: #2c2825; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 48px; margin-bottom: 16px;">🛡️</div>
-          <h2 style="color: #c95d53; margin: 0 0 8px 0; font-size: 20px;">Доступ ограничен</h2>
-          <p style="font-size: 14px; color: #8c827a; max-width: 300px; text-align: center; line-height: 1.4; margin: 0 0 20px 0;">Этот инструмент предназначен только для авторизованных мастеров.</p>
-          <div style="font-size: 12px; background: rgba(0,0,0,0.05); padding: 8px 12px; border-radius: 8px; color: #555;">Ваш Telegram ID: ${userId || 'не определен'}</div>
-        </body>
-        </html>
-      `);
-      document.close();
-      throw new Error("Access denied");
-    }
+      // Если ID нет в списке разрешенных — блокируем интерфейс и показываем ID
+      if (!userId || !ALLOWED_USERS.includes(userId)) {
+        document.body.innerHTML = `
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fbf9f6; color: #2c2825; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center; padding: 20px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🛡️</div>
+            <h2 style="color: #c95d53; margin: 0 0 8px 0; font-size: 20px;">Доступ ограничен</h2>
+            <p style="font-size: 14px; color: #8c827a; max-width: 300px; line-height: 1.4; margin: 0 0 20px 0;">Этот инструмент предназначен только для авторизованных мастеров.</p>
+            <div style="font-size: 13px; background: rgba(0,0,0,0.05); padding: 10px 14px; border-radius: 8px; color: #333;">Ваш Telegram ID: <b>${userId ? userId : 'не определен (null)'}</b></div>
+          </div>
+        `;
+        throw new Error("Access denied");
+      }
+    });
   </script>
+</head>
+<body>
 
   <div class="container">
     <h1>Калькулятор прибыли мастера</h1>
