@@ -12,7 +12,6 @@
       --text-muted: #8c827a;
       --accent: #2c6b56;
       --border: #e6e1da;
-      --danger: #c95d53;
     }
 
     body {
@@ -100,28 +99,6 @@
       margin-top: 8px;
     }
   </style>
-
-  <script>
-    // Проверяем секретный ключ в адресной строке (например: ?token=master2026)
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    
-    // Секретный токен, который должны знать только вы
-    const SECRET_TOKEN = 'master2026';
-
-    if (token !== SECRET_TOKEN) {
-      document.addEventListener('DOMContentLoaded', () => {
-        document.body.innerHTML = `
-          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fbf9f6; color: #2c2825; font-family: sans-serif; text-align: center; padding: 20px;">
-            <div style="font-size: 48px; margin-bottom: 16px;">🛡️</div>
-            <h2 style="color: #c95d53; margin: 0 0 8px 0; font-size: 20px;">Доступ ограничен</h2>
-            <p style="font-size: 14px; color: #8c827a; max-width: 300px; line-height: 1.4; margin: 0;">У вас нет прав для просмотра этого калькулятора.</p>
-          </div>
-        `;
-      });
-      throw new Error("Unauthorized");
-    }
-  </script>
 </head>
 <body>
 
