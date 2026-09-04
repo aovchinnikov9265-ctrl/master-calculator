@@ -3,9 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <title>Калькулятор прибыли мастера</title>
   <style>
     :root {
@@ -105,35 +102,25 @@
   </style>
 
   <script>
-    // ==========================================
-    // СИСТЕМА ДОСТУПА ПО TELEGRAM ID
-    // ==========================================
-    const ALLOWED_USERS = [
-      197451316, // Ваш Telegram ID
-    ];
+    // Проверяем секретный ключ в адресной строке (например: ?token=master2026)
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    
+    // Секретный токен, который должны знать только вы
+    const SECRET_TOKEN = 'master2026';
 
-    // Ждем полной загрузки DOM, чтобы Telegram WebApp успел инициализироваться
-    window.addEventListener('DOMContentLoaded', () => {
-      const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-      if (tg) {
-        tg.expand();
-      }
-
-      const userId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
-
-      // Если ID нет в списке разрешенных — блокируем интерфейс и показываем ID
-      if (!userId || !ALLOWED_USERS.includes(userId)) {
+    if (token !== SECRET_TOKEN) {
+      document.addEventListener('DOMContentLoaded', () => {
         document.body.innerHTML = `
-          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fbf9f6; color: #2c2825; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center; padding: 20px;">
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fbf9f6; color: #2c2825; font-family: sans-serif; text-align: center; padding: 20px;">
             <div style="font-size: 48px; margin-bottom: 16px;">🛡️</div>
             <h2 style="color: #c95d53; margin: 0 0 8px 0; font-size: 20px;">Доступ ограничен</h2>
-            <p style="font-size: 14px; color: #8c827a; max-width: 300px; line-height: 1.4; margin: 0 0 20px 0;">Этот инструмент предназначен только для авторизованных мастеров.</p>
-            <div style="font-size: 13px; background: rgba(0,0,0,0.05); padding: 10px 14px; border-radius: 8px; color: #333;">Ваш Telegram ID: <b>${userId ? userId : 'не определен (null)'}</b></div>
+            <p style="font-size: 14px; color: #8c827a; max-width: 300px; line-height: 1.4; margin: 0;">У вас нет прав для просмотра этого калькулятора.</p>
           </div>
         `;
-        throw new Error("Access denied");
-      }
-    });
+      });
+      throw new Error("Unauthorized");
+    }
   </script>
 </head>
 <body>
