@@ -62,7 +62,7 @@
       color: var(--text-muted);
     }
 
-    /* Кнопка с восклицательным знаком */
+    /* Кнопка с восклицательным знаком / i */
     .info-toggle {
       background: none;
       border: 1px solid var(--border);
@@ -101,26 +101,21 @@
       background: #fff;
     }
 
-    /* Стили для выпадающего списка расходников */
+    /* Блок с расходниками по умолчанию скрыт */
     .details-box {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, opacity 0.3s ease;
-      opacity: 0;
+      display: none;
       background: #f9f6f0;
+      border: 1px solid var(--border);
       border-radius: 8px;
       font-size: 13px;
       color: var(--text-muted);
-      padding: 0 12px;
-      margin-top: 0;
-    }
-
-    .details-box.open {
-      max-height: 150px; /* Достаточно для текста */
-      opacity: 1;
       padding: 10px 12px;
       margin-top: 6px;
-      border: 1px solid var(--border);
+    }
+
+    /* Когда открыт — показываем */
+    .details-box.open {
+      display: block;
     }
 
     .result-card {
