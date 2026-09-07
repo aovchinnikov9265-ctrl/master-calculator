@@ -67,21 +67,22 @@
       background: none;
       border: 1px solid var(--border);
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 11px;
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
       font-weight: bold;
       color: var(--text-muted);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
+      user-select: none;
     }
 
-    .info-toggle:hover {
+    .info-toggle:active {
+      background-color: #f0ece6;
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -103,7 +104,7 @@
       background: #fff;
     }
 
-    /* Блок с расходниками по умолчанию скрыт */
+    /* Блок с расходниками по умолчанию скрыт через JS или стиль */
     .details-box {
       display: none;
       background: #f9f6f0;
@@ -113,11 +114,6 @@
       color: var(--text-muted);
       padding: 10px 12px;
       margin-top: 6px;
-    }
-
-    /* Когда открыт — показываем */
-    .details-box.open {
-      display: block;
     }
 
     .result-card {
@@ -159,8 +155,8 @@
     <div class="form-group">
       <div class="label-wrapper">
         <label for="cost">Себестоимость материалов (₽)</label>
-        <!-- Кнопка с поддержкой touch-событий для мобильных клиентов Telegram -->
-        <button type="button" class="info-toggle" ontouchstart="toggleDetails(event)" onclick="toggleDetails(event)" title="Состав расходников">i</button>
+        <!-- Используем стандартный onclick с прямым вызовом -->
+        <button type="button" class="info-toggle" onclick="toggleDetails()" title="Состав расходников">i</button>
       </div>
       <input type="number" id="cost" placeholder="0" value="500" oninput="calculate()">
       
@@ -202,15 +198,13 @@
       document.getElementById('netProfit').innerText = netProfit.toLocaleString('ru-RU') + ' ₽';
     }
 
-    function toggleDetails(event) {
-      if (event) {
-        event.preventDefault();
-      }
+    function toggleDetails() {
       const box = document.getElementById('consumablesDetails');
-      if (box.classList.contains('open')) {
-        box.classList.remove('open');
+      // Прямое переключение свойства display в обход классов
+      if (box.style.display === 'block') {
+        box.style.display = 'none';
       } else {
-        box.classList.add('open');
+        box.style.display = 'block';
       }
     }
 
