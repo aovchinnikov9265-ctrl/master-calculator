@@ -77,7 +77,8 @@
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
-      -webkit-tap-highlight-color: transparent; /* Убирает серый плавающий фон при тапе на мобилках */
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .info-toggle:hover {
@@ -158,8 +159,8 @@
     <div class="form-group">
       <div class="label-wrapper">
         <label for="cost">Себестоимость материалов (₽)</label>
-        <!-- Кнопка с восклицательным знаком -->
-        <button type="button" class="info-toggle" onclick="toggleDetails()" title="Состав расходников">i</button>
+        <!-- Кнопка с поддержкой touch-событий для мобильных клиентов Telegram -->
+        <button type="button" class="info-toggle" ontouchstart="toggleDetails(event)" onclick="toggleDetails(event)" title="Состав расходников">i</button>
       </div>
       <input type="number" id="cost" placeholder="0" value="500" oninput="calculate()">
       
@@ -201,9 +202,11 @@
       document.getElementById('netProfit').innerText = netProfit.toLocaleString('ru-RU') + ' ₽';
     }
 
-    function toggleDetails() {
+    function toggleDetails(event) {
+      if (event) {
+        event.preventDefault();
+      }
       const box = document.getElementById('consumablesDetails');
-      // Жесткая проверка состояния для мобильных браузеров
       if (box.classList.contains('open')) {
         box.classList.remove('open');
       } else {
